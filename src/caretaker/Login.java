@@ -3,8 +3,6 @@ package caretaker;
 import caretaker.helper.Database;
 import caretaker.viewmodel.AppStack;
 import java.awt.Font;
-import java.awt.Image;
-import javax.swing.ImageIcon;
 
 public class Login extends javax.swing.JPanel {
 
