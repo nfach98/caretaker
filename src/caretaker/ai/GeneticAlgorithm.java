@@ -14,8 +14,6 @@ public class GeneticAlgorithm {
     ArrayList<Formasi> formations = new ArrayList<>();
     
     void start(){
-        Random rn = new Random();
-        
         population.initializePopulation(10, formations.get(0));
         population.calculateFitness();
         
@@ -42,7 +40,10 @@ public class GeneticAlgorithm {
     }
     
     //Crossover
-    void crossover(Individual i1, Individual i2) {
+    void crossover(Individual i1, Individual i2, Formasi f) {
+        Individual o1 = new Individual(f);
+        Individual o2 = new Individual(f);
+        
         ArrayList<Integer> points = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6,7,8,9,10));
         Collections.shuffle(points);
         
@@ -52,23 +53,43 @@ public class GeneticAlgorithm {
         ArrayList<Integer> iCross1 = new ArrayList<>();
         ArrayList<Integer> iCross2 = new ArrayList<>();
         
+        //Determine offsprings crossover genes
         for(int i=0; i<11; i++){
             if(pointStart < i && i < pointEnd){
                 iCross1.add(i1.genes[i]);
                 iCross2.add(i2.genes[i]);
+                
+                o1.genes[i] = i1.genes[i];
+                o2.genes[i] = i2.genes[i];
             }
         }
         
+        //Fill remaining offsprings genes
         for(int i=0; i<11; i++){
             if(i < pointStart || pointEnd < i){
-                iCross1.add(i1.genes[i]);
-                iCross2.add(i2.genes[i]);
+                for(int o: i2.genes){
+                    if(!iCross2.contains(o)){
+                        o1.genes[i] = o;
+                        break;
+                    }
+                }
+                
+                for(int o: i1.genes){
+                    if(!iCross1.contains(o)){
+                        o2.genes[i] = o;
+                        break;
+                    }
+                }
             }
         }
+        
+        //Add offsprings to population
+        population.individuals.add(o1);
+        population.individuals.add(o2);
     }
 
     //Mutation
-    public Individual mutation(Individual ind){
+    Individual mutation(Individual ind){
         Random rn = new Random();
         RandomPlayerId rnPlayer = new RandomPlayerId();
         
@@ -95,46 +116,4 @@ public class GeneticAlgorithm {
         ind.genes[mutationPoint] = mutationValue;
         return ind;
     }
-//    void mutation() {
-//        Random rn = new Random();
-//
-//        int mutationPoint = rn.nextInt(population.individuals.get(0).geneLength);
-//
-//        if (fittest.genes[mutationPoint] == 0) {
-//            fittest.genes[mutationPoint] = 1;
-//        } else {
-//            fittest.genes[mutationPoint] = 0;
-//        }
-//
-//        mutationPoint = rn.nextInt(population.individuals[0].geneLength);
-//
-//        if (secondFittest.genes[mutationPoint] == 0) {
-//            secondFittest.genes[mutationPoint] = 1;
-//        } else {
-//            secondFittest.genes[mutationPoint] = 0;
-//        }
-//    }
-//
-//    //Get fittest offspring
-//    Individual getFittestOffspring() {
-//        if (fittest.fitness > secondFittest.fitness) {
-//            return fittest;
-//        }
-//        return secondFittest;
-//    }
-//
-//
-//    //Replace least fittest individual from most fittest offspring
-//    void addFittestOffspring() {
-//
-//        //Update fitness values of offspring
-//        fittest.calcFitness();
-//        secondFittest.calcFitness();
-//
-//        //Get index of least fit individual
-//        int leastFittestIndex = population.getLeastFittestIndex();
-//
-//        //Replace least fittest individual from most fittest offspring
-//        population.individuals[leastFittestIndex] = getFittestOffspring();
-//    }
 }
