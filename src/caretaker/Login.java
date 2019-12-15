@@ -8,7 +8,6 @@ public class Login extends javax.swing.JPanel {
 
     public Login() {
         initComponents();
-        init();
     }
 
     @SuppressWarnings("unchecked")
@@ -179,10 +178,6 @@ public class Login extends javax.swing.JPanel {
         }
         warning.setText(" ");
     }//GEN-LAST:event_passFieldMouseClicked
-
-    private void init(){
-        
-    }
 
     @Override
     public String getName() {
