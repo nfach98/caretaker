@@ -12,7 +12,7 @@ public class Individual implements Comparable<Individual>{
     int geneLength = 11;
     
     Formasi formasi;
-
+    
     public Individual(Formasi f) {
         this.fitness = 0f;
         this.formasi = f;
